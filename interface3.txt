@@ -1,0 +1,262 @@
+package projectpack;
+
+import java.awt.Color;
+
+import java.awt.EventQueue;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import java.awt.Toolkit;
+import java.awt.Font;
+import java.awt.Window.Type;
+import java.io.*;
+
+import javax.swing.JList;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.JButton;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+
+
+public class Interface3 extends JFrame {
+private JPanel contentPane;
+	
+	private JTextField tfEMP1;
+	private JTextField tfEMP2;
+	private JTextField tfPD;
+	private JTextField tfROWSPC;
+	private JTextField tfLfmax;
+	private JTextField tfp1;
+	private JTextField tfsla;
+
+	private Action action;
+	
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Interface3 frame = new Interface3();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 * @throws IOException 
+	 */
+	public Interface3() throws IOException, FileNotFoundException {
+		setAlwaysOnTop(true);
+		setType(Type.POPUP);
+		setFont(new Font("Cambria", Font.BOLD, 16));
+		setTitle("Modular Crop Growth Model and Simulation");
+		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\\\\\\\Users\\\\\\\\Emaan Malik\\\\\\\\Downloads\\\\\\\\WhatsApp Image 2023-01-10 at 2.40.20 PM (1).jpeg"));
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 891, 483);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+
+		JLabel enterdata = new JLabel("Enter the following Data: ");
+		enterdata.setForeground(Color.WHITE);
+		enterdata.setHorizontalAlignment(SwingConstants.CENTER);
+		enterdata.setFont(new Font("Georgia", Font.PLAIN, 14));
+		enterdata.setBounds(144, 22, 511, 22);
+		contentPane.add(enterdata);
+		
+		JButton btnNEXT = new JButton("NEXT");
+		btnNEXT.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+
+				Interface3 Interface3 = null;
+				try {
+					Interface3 = new Interface3();
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				Interface3.dispose();
+				Interface4 InterfaceGUI4 = null;
+				try {
+					InterfaceGUI4 = new Interface4();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				InterfaceGUI4.setVisible(true);
+								
+			}
+		});
+		btnNEXT.setForeground(Color.BLACK);
+		btnNEXT.setBackground(new Color(47, 79, 79));
+		btnNEXT.setFont(new Font("Cambria", Font.BOLD, 14));
+		btnNEXT.setBounds(491, 375, 125, 39);
+		contentPane.add(btnNEXT);
+		
+		
+		JLabel labelEMP1= new JLabel("Enter Empirical Coefficient for LAI (EMP1):");
+		labelEMP1.setForeground(Color.WHITE);
+		labelEMP1.setFont(new Font("Cambria", Font.ITALIC, 12));
+		labelEMP1.setBounds(132, 54, 254, 47);
+		contentPane.add(labelEMP1);
+		
+		JLabel labelEMP2 = new JLabel("Enter Empirical Coefficient for LAI (EMP2):");
+		labelEMP2.setForeground(Color.WHITE);
+		labelEMP2.setFont(new Font("Cambria", Font.ITALIC, 12));
+		labelEMP2.setBounds(132, 98, 254, 47);
+		contentPane.add(labelEMP2);
+		
+		JLabel labelPD = new JLabel("Enter Plant Density (plant/m2):");
+		labelPD.setForeground(Color.WHITE);
+		labelPD.setFont(new Font("Cambria", Font.ITALIC, 12));
+		labelPD.setBounds(132, 142, 254, 47);
+		contentPane.add(labelPD);
+		
+		JLabel labelROWSPC = new JLabel("Enter Row Spacing (cm) :");
+		labelROWSPC.setForeground(Color.WHITE);
+		labelROWSPC.setFont(new Font("Cambria", Font.ITALIC, 12));
+		labelROWSPC.setBounds(132, 186, 254, 47);
+		contentPane.add(labelROWSPC);
+		
+		JLabel labelLfmax = new JLabel("Enter Maximum Number of Leaves:");
+		labelLfmax.setForeground(Color.WHITE);
+		labelLfmax.setFont(new Font("Cambria", Font.ITALIC, 12));
+		labelLfmax.setBounds(132, 230, 254, 47);
+		contentPane.add(labelLfmax);
+		
+		JLabel labelp1 = new JLabel("Enter Dry Matter of Leaves (g):");
+		labelp1.setForeground(Color.WHITE);
+		labelp1.setFont(new Font("Cambria", Font.ITALIC, 12));
+		labelp1.setBounds(132, 274, 254, 47);
+		contentPane.add(labelp1);
+		
+		
+		JLabel labelsla = new JLabel("Enter Specific Leaf Area (m2/g):");
+		labelsla.setForeground(Color.WHITE);
+		labelsla.setFont(new Font("Cambria", Font.ITALIC, 12));
+		labelsla.setBounds(132, 318, 254, 47);
+		contentPane.add(labelsla);
+		
+		
+		
+		
+		tfEMP1 = new JTextField();
+		tfEMP1.setBounds(590, 67, 96, 22);
+		contentPane.add(tfEMP1);
+		tfEMP1.setColumns(10);
+		
+		tfEMP2 = new JTextField();
+		tfEMP2.setBounds(590, 112, 96, 22);
+		contentPane.add(tfEMP2);
+		tfEMP2.setColumns(10);
+		
+		tfPD = new JTextField();
+		tfPD.setBounds(590, 157, 96, 22);
+		contentPane.add(tfPD);
+		tfPD.setColumns(10);
+		
+		tfROWSPC = new JTextField();
+		tfROWSPC.setBounds(590, 202, 96, 22);
+		contentPane.add(tfROWSPC);
+		tfROWSPC.setColumns(10);
+		
+		tfLfmax = new JTextField();
+		tfLfmax.setBounds(590, 247, 96, 22);
+		contentPane.add(tfLfmax);
+		tfLfmax.setColumns(10);
+		
+		tfp1 = new JTextField();
+		tfp1.setBounds(590, 292, 96, 22);
+		contentPane.add(tfp1);
+		tfp1.setColumns(10);
+		
+		tfsla = new JTextField();
+		tfsla.setBounds(590, 337, 96, 22);
+		contentPane.add(tfsla);
+		tfsla.setColumns(10);
+		
+		
+		JButton btnEnter = new JButton("ENTER");
+		btnEnter.addMouseListener(new MouseAdapter () {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				String enterEMP1=tfEMP1.getText();
+				double entrEMP1=Double.parseDouble(enterEMP1);
+				String enterEMP2=tfEMP2.getText();
+				double entrEMP2=Double.parseDouble(enterEMP2);
+				String enterPD=tfPD.getText();
+				double entrPD=Double.parseDouble(enterPD);
+				String enterROWSPC=tfROWSPC.getText();
+				double entrROWSPC=Double.parseDouble(enterROWSPC);
+				String enterLfmax=tfLfmax.getText();
+				double entrLfmax=Double.parseDouble(enterLfmax);
+				String enterp1=tfp1.getText();
+				double entrp1=Double.parseDouble(enterp1);
+				String entersla=tfsla.getText();
+				double entrsla=Double.parseDouble(entersla);	
+			File p=new File("PlantInp.txt");
+				
+				FileOutputStream pin = null;
+				try {
+					pin= new FileOutputStream(p);
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}					
+			    PrintWriter din=new PrintWriter(pin);
+			    din.println(entrEMP1);
+			    din.println(entrEMP2);
+			    din.println(entrPD);
+			    din.println(entrROWSPC);
+			    din.println(entrLfmax);
+			    din.println(entrp1);
+			    din.println(entrsla);
+			   
+			    din.close();	
+				
+			   
+			}
+		});
+		
+		btnEnter.setForeground(Color.BLACK);
+		btnEnter.setBackground(new Color(47, 79, 79));
+		btnEnter.setFont(new Font("Cambria", Font.BOLD, 14));
+		btnEnter.setBounds(265, 375, 125, 39);
+		contentPane.add(btnEnter);
+		
+		
+		
+
+		JLabel backgroundimg = new JLabel("");	
+		backgroundimg.setIcon(new ImageIcon("C:\\\\\\\\Users\\\\\\\\Emaan Malik\\\\\\\\Downloads\\\\\\\\WhatsApp Image 2023-01-10 at 2.40.20 PM.jpeg"));
+		backgroundimg.setBounds(-1, -6, 876, 447);
+		contentPane.add(backgroundimg);
+		}
+	}
+

@@ -1,0 +1,229 @@
+package projectpack;
+
+import java.io.*;
+
+
+public class SoilWater {
+	
+		double WPp=0.0, FCp=0.0, STp=0.0, DP=0.0, DRNp=0.0, CN=0.0, IRR=0.0, DRN=0.0, SWC=0.0, STRESSDEPTH=0.0; 
+		double s=0.0, THE=0.0, ROF=0.0, TRAIN=0.0, TIRR=0.0, TESA=0.0, TEPA=0.0, TROF=0.0, TDRN=0.0, TINF=0.0;
+		double EPp=0.0, ETp=0.0, f=0.0, ESp=0.0, ESa=0.0, EPa=0.0, WTABLE=0.0, DWT=0.0,LAI=0.0;
+		double SWFAC1=1, SWFAC2=1;
+
+	  double getPOTINF() { return (Weather.RAIN + IRR); }
+		double getINF() { return (getPOTINF() - ROF); }
+
+		double getROF() { return ROF; }
+		double getEpa() { return EPa;}
+
+
+
+
+	public void initialization() throws IOException
+	{
+
+		
+		File i=new File("SoilInp.txt");
+		FileReader fi=new FileReader(i);
+	    BufferedReader oi=new BufferedReader(fi);
+	    String [] a1=new String [11];
+		for (int i1=0;i1<11;i1++) {
+		a1[i1]=oi.readLine();
+		System.out.println(a1[i1]);
+		}
+		WPp = Double.parseDouble(a1[0]);
+		FCp = Double.parseDouble(a1[1]);
+		STp = Double.parseDouble(a1[2]);
+		DP = Double.parseDouble(a1[3]);
+		DRNp = Double.parseDouble(a1[4]);
+		CN = Double.parseDouble(a1[5]);
+		IRR =Double.parseDouble(a1[6]);
+		DRN = Double.parseDouble(a1[7]);
+		SWC =Double.parseDouble(a1[8]);
+		STRESSDEPTH = Double.parseDouble(a1[9]);
+		LAI = Plant.LAI;
+
+		
+		oi.close();
+		
+		File p1=new File("IRRIG.txt");
+		FileReader pin1=new FileReader(p1);
+		@SuppressWarnings("resource")
+		BufferedReader din1=new BufferedReader(pin1);
+		
+		String [] a2=new String [2];
+		for (int i2=0;i2<2;i2++) {
+		a2[i2]=din1.readLine();
+		System.out.println(a2[i2]);
+		}
+		SWFAC1=Double.parseDouble(a2[0]);
+		SWFAC2=Double.parseDouble(a2[1]);
+		din1.close();
+		}
+
+	public double getWP()
+	{
+		return (DP * WPp * 10);
+	}
+	public double getFC()
+	{
+		return (DP * FCp * 10);
+	}
+	public double getST()
+	{
+		return (DP * STp * 10);
+	}
+
+	public void RUNOFF()
+	{
+		s = 254 * (100 / CN - 1);
+		if (getPOTINF() > 0.2 * s)
+		{
+			ROF = ((getPOTINF() - 0.2 * s) * 2) / (getPOTINF() + 0.8 * s);
+		}
+		else
+		{
+			ROF = 0;
+		}
+	}
+	public void STRESS()
+	{
+		THE = getWP() + 0.75 * (getFC() - getWP());
+	}
+	public void DRAINE()
+	{
+		DRN = SWC - getFC() * DRNp;
+	}
+	public double getALB()
+	{
+		double ALB = 0.1 * Math.exp(-0.7 * LAI) + 0.2 * (1 - Math.exp(-0.7 * LAI));
+		return ALB;
+	}
+	public double getTmed()
+	{
+		double Tmed;
+		Tmed = 0.6 * Weather.Tmax + 0.4 * Weather.Tmin;
+		return Tmed;
+	}
+	public double getEEQ()
+	{
+		double EEQ;
+		EEQ = Weather.SRAD * (4.88 * Math.exp(3) - 4.37 * Math.exp(3) * getALB()) * (getTmed() + 29);
+		return EEQ;
+	}
+	public void CalcEPp()
+	{
+		EPp = ETp * (1 - Math.exp(-0.7 * LAI));
+		System.out.println("Epp  :"+EPp);
+	}
+	public void ETpS()
+	{
+		ETp = (1.26 * (Weather.SRAD - f) * 1000) / 2453;
+		System.out.println("ETp  :"+ETp);
+	}
+	public void CalcESP()
+	{
+		ESp = ETp * Math.exp(-0.7 * LAI);
+		System.out.println("ESp  :"+ESp);
+	}
+	public void ESaS()
+	{
+		int a=1;
+		ESa = ESp * a;
+		EPa = EPp / SWFAC1;
+		SWC = SWC + (getINF() - ESa - EPa - DRN);
+		if (SWC < getWP())
+			a = 0;
+		else if (SWC > getFC())
+			a = 1;
+		else
+			a = (int) ((SWC - getWP()) / (getFC() - getWP()));
+		
+		
+	}
+	public void rateCalculations()
+	{
+		DRAINE(); //vericle drainage of soil water
+		RUNOFF();
+		ETpS();
+		CalcEPp();
+		CalcESP();
+		ESaS();
+	}
+	public void integration()
+	{
+		//SWC = SWC + (getINF() - ESa - EPa - DRN);
+		
+		if (SWC > getST())
+		{
+			ROF = ROF + (SWC - getST());
+			SWC = getST();
+		}
+		double SWC_ADJ = 0;
+		if (SWC < 0)
+		{
+			SWC_ADJ = SWC_ADJ - SWC;
+			SWC = 0;
+		}
+		TINF += getINF();
+		TESA += ESa;
+		TEPA += EPa;
+		TDRN += DRN;
+		TROF += ROF;
+		TRAIN += Weather.RAIN;
+		STRESS();
+		if (SWC < getWP())
+			SWFAC1 = 0.0;
+		else if (SWC > THE)
+			SWFAC2 = 1.0;
+		else
+		{
+			SWFAC1 = (SWC - getWP());
+			SWFAC2 = Math.max(Math.min(SWFAC1, 1.0), 0.0);
+
+		}
+		WTABLE = (SWC - getFC()) / (getST() - getFC()) * DP * 10;
+		DWT = DP * 10 - WTABLE;
+
+		if (DWT > STRESSDEPTH)
+			SWFAC2 = 1.0;
+		else
+			SWFAC2 = DWT / STRESSDEPTH;
+	}
+	public void output() throws FileNotFoundException
+	{
+		File oup =new File ("SoilOut.txt");
+		FileOutputStream oups=new FileOutputStream(oup);
+		PrintWriter pwoups=new PrintWriter(oups);
+		//DataOutputStream doups=new DataOutputStream(oups);
+		pwoups.println("Vertical drainage of soil: "+DRN);
+		pwoups.println("Surface water runoff rate: "+ROF);
+		pwoups.println("Evapotranspiration rate: "+ETp);
+		pwoups.println("Average temparature: "+getTmed());
+		pwoups.println("Equillibrium evaporation: "+getEEQ());
+		pwoups.println("Daily soil evaporation rate: "+ESa);
+		pwoups.println("Plant transpiration rate: "+EPa+"\n\n");
+		pwoups.close();
+		
+		File oup1=new File ("IRRIG.txt");
+		FileOutputStream oups1=new FileOutputStream(oup1);
+		PrintWriter pwoups1=new PrintWriter(oups1);
+		pwoups1.println(SWFAC1);
+		pwoups1.println(SWFAC2);
+		pwoups1.close();
+		
+	}
+
+	public void close() throws IOException {
+		File wbal =new File ("WBALOUT.txt");
+		FileOutputStream wbalc=new FileOutputStream(wbal);
+		PrintWriter pwbalc=new PrintWriter(wbalc);
+		if(WTABLE==0) {
+			pwbalc.println("Changes in soilwater content are equal to cumulative inflows and outflows");
+		}else
+			pwbalc.println("Changes in soilwater content are not equal to cumulative inflows and outflows");
+		pwbalc.close();
+		
+	}
+
+	}

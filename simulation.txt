@@ -1,0 +1,42 @@
+import java.io.IOException;
+
+import projectOOP.Plant;
+import projectOOP.SoilWater;
+import projectOOP.Weather;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+public  class Simulation {
+	
+	Plant plant1=new Plant();
+	SoilWater soilwater1=new SoilWater();
+	Weather weather1=new Weather();
+	
+public void initialization() throws IOException {
+	plant1.initalization();
+	weather1.initalization();
+	plant1.RateCalculations();
+	soilwater1.initialization();
+
+	
+		
+}
+
+	public void RateCalculations() {
+	
+	soilwater1.rateCalculations();
+	
+	}
+
+	public void integration() {
+	plant1.integration();
+	soilwater1.integration();
+	}
+
+	public void output() throws IOException {
+	plant1.output();
+	soilwater1.output();
+	soilwater1.close();
+	
+	}
+	}

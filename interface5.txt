@@ -1,0 +1,174 @@
+package projectpack;
+
+import java.awt.EventQueue;
+
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.SwingConstants;
+import java.awt.Font;
+import java.io.*;
+import java.awt.Color;
+import java.awt.Toolkit;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+public class Interface5 extends JFrame {
+
+	private JPanel contentPane;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Interface5 frame = new Interface5();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 * @throws IOException 
+	 */
+	public Interface5() throws IOException {
+		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\\\Users\\\\Emaan Malik\\\\Downloads\\\\WhatsApp Image 2023-01-10 at 2.40.20 PM (1).jpeg"));
+		setTitle("Modular Crop Growth Model and Simulation");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 892, 483);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+			
+		JLabel lblOUTPUTS = new JLabel("RESULTS :");
+		lblOUTPUTS.setForeground(Color.WHITE);
+		lblOUTPUTS.setFont(new Font("Cambria", Font.BOLD, 16));
+		lblOUTPUTS.setHorizontalAlignment(SwingConstants.CENTER);
+		lblOUTPUTS.setBounds(276, 21, 292, 26);
+		contentPane.add(lblOUTPUTS);
+		
+		JLabel lblPG = new JLabel("");
+		lblPG.setForeground(Color.WHITE);
+		lblPG.setFont(new Font("Cambria", Font.ITALIC, 14));
+		lblPG.setBounds(10, 70, 419, 26);
+		contentPane.add(lblPG);
+		
+		JLabel lblPT = new JLabel("New label");
+		lblPT.setForeground(Color.WHITE);
+		lblPT.setFont(new Font("Cambria", Font.ITALIC, 14));
+		lblPT.setBounds(10, 104, 419, 26);
+		contentPane.add(lblPT);
+		
+		JLabel lblW = new JLabel("New label");
+		lblW.setForeground(Color.WHITE);
+		lblW.setFont(new Font("Cambria", Font.ITALIC, 14));
+		lblW.setBounds(10, 153, 419, 26);
+		contentPane.add(lblW);
+		
+		JLabel lblWC = new JLabel("New label");
+		lblWC.setForeground(Color.WHITE);
+		lblWC.setFont(new Font("Cambria", Font.ITALIC, 14));
+		lblWC.setBounds(10, 206, 419, 26);
+		contentPane.add(lblWC);
+		
+		JLabel lblWR = new JLabel("New label");
+		lblWR.setForeground(Color.WHITE);
+		lblWR.setFont(new Font("Cambria", Font.ITALIC, 14));
+		lblWR.setBounds(10, 256, 419, 26);
+		contentPane.add(lblWR);
+		
+		JLabel lblLAI = new JLabel("New label");
+		lblLAI.setForeground(Color.WHITE);
+		lblLAI.setFont(new Font("Cambria", Font.ITALIC, 14));
+		lblLAI.setBounds(10, 311, 402, 26);
+		contentPane.add(lblLAI);
+		
+		File Inter5=new File("PlantOut.txt");
+		FileReader finter5=new FileReader(Inter5);
+	    BufferedReader dfinter5=new BufferedReader(finter5);
+	    String[] pstr=new String[6];
+		for (int i=0;i<6;i++) {
+		pstr[i]=dfinter5.readLine();
+		}
+		lblPG.setText(pstr[0]);
+		lblPT.setText(pstr[1]);
+		lblW.setText(pstr[2]);
+		lblWC.setText(pstr[3]);
+		lblWR.setText(pstr[4]);
+		lblLAI.setText(pstr[5]);
+		dfinter5.close();
+		
+		JLabel lblDRN = new JLabel("New label");
+		lblDRN.setForeground(Color.WHITE);
+		lblDRN.setFont(new Font("Cambria", Font.ITALIC, 14));
+		lblDRN.setBounds(482, 70, 392, 26);
+		contentPane.add(lblDRN);
+		
+		JLabel lblROF = new JLabel("New label");
+		lblROF.setForeground(Color.WHITE);
+		lblROF.setFont(new Font("Cambria", Font.ITALIC, 14));
+		lblROF.setBounds(482, 106, 392, 26);
+		contentPane.add(lblROF);
+		
+		JLabel lblETP = new JLabel("New label");
+		lblETP.setForeground(Color.WHITE);
+		lblETP.setFont(new Font("Cambria", Font.ITALIC, 14));
+		lblETP.setBounds(482, 153, 392, 26);
+		contentPane.add(lblETP);
+		
+		JLabel lblTMED = new JLabel("New label");
+		lblTMED.setForeground(Color.WHITE);
+		lblTMED.setFont(new Font("Cambria", Font.ITALIC, 14));
+		lblTMED.setBounds(482, 206, 392, 26);
+		contentPane.add(lblTMED);
+		
+		JLabel lblEEQ = new JLabel("New label");
+		lblEEQ.setForeground(Color.WHITE);
+		lblEEQ.setFont(new Font("Cambria", Font.ITALIC, 14));
+		lblEEQ.setBounds(482, 256, 392, 26);
+		contentPane.add(lblEEQ);
+		
+		JLabel lblESA = new JLabel("New label");
+		lblESA.setForeground(Color.WHITE);
+		lblESA.setFont(new Font("Cambria", Font.ITALIC, 14));
+		lblESA.setBounds(482, 311, 392, 26);
+		contentPane.add(lblESA);
+		
+		JLabel lblEPA = new JLabel("New label");
+		lblEPA.setForeground(Color.WHITE);
+		lblEPA.setFont(new Font("Cambria", Font.ITALIC, 14));
+		lblEPA.setBounds(276, 347, 392, 26);
+		contentPane.add(lblEPA);
+		
+		File inter5=new File("SoilOut.txt");
+		FileReader Finter5=new FileReader(inter5);
+	    BufferedReader Dfinter5=new BufferedReader(Finter5);
+	    String[] Pstr=new String[7];
+		for (int i=0;i<7;i++) {
+		Pstr[i]=Dfinter5.readLine();
+		}
+		lblDRN.setText(Pstr[0]);
+		lblROF.setText(Pstr[1]);
+		lblETP.setText(Pstr[2]);
+		lblTMED.setText(Pstr[3]);
+		lblEEQ.setText(Pstr[4]);
+		lblESA.setText(Pstr[5]);
+		lblEPA.setText(Pstr[6]);
+		Dfinter5.close();
+		
+		JLabel backgroundimg = new JLabel("");
+		backgroundimg.setIcon(new ImageIcon("C:\\\\Users\\\\Emaan Malik\\\\Downloads\\\\WhatsApp Image 2023-01-10 at 2.40.20 PM.jpeg"));
+		backgroundimg.setBounds(-1, -6, 876, 447);
+		contentPane.add(backgroundimg);
+	}
+}
+

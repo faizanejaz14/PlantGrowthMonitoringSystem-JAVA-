@@ -1,0 +1,120 @@
+package projectpack;
+
+import java.lang.Math;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.io.*;
+
+public class Plant {
+	public static double LAI = 0;
+	private double EMP1=0, EMP2=0, PD=0, ROWSPC=0, Lfmax=0, p1=1, sla=1;
+	private double PT=1, PG=1, dLAI=1, n=1, dN=1, nb=1, di=1;
+	private double dw=1, dwc=1, dwr=1, dwf=1, w=1, wc=1, wf=1, wr=1;
+	private double SWFAC1=1, SWFAC2=1;
+
+
+
+
+public void initalization() throws IOException
+{
+
+	
+	File p=new File("PlantInp.txt");
+	FileReader pin=new FileReader(p);
+    BufferedReader din=new BufferedReader(pin);
+    String [] a=new String [7];
+	for (int i=0;i<7;i++) {
+	a[i]=din.readLine();
+	}
+	EMP1=Double.parseDouble(a[0]);
+	EMP2=Double.parseDouble(a[1]);
+	PD=Double.parseDouble(a[2]);
+	ROWSPC=Double.parseDouble(a[3]);
+	Lfmax=Double.parseDouble(a[4]);
+	p1=Double.parseDouble(a[5]);
+	sla=Double.parseDouble(a[6]);
+	for (int i1=0;i1<7;i1++) {
+		System.out.println(a[i1]);
+	}
+	
+	System.out.println("EMP1  :"+EMP1);
+	System.out.println("EMP2  :"+EMP2);
+	System.out.println("PD  :"+PD);
+	System.out.println("ROWSPC  :"+ROWSPC);
+	System.out.println("Lfmax  :"+Lfmax);
+	System.out.println("p1  :"+p1);
+	System.out.println("sla  :"+sla);
+
+	din.close();
+	
+}
+double getLAI() { return LAI; }
+double getW() { return w; }
+	public void PTS() {
+		PT=1-0.0025*(Math.pow((0.25*Weather.Tmin+0.75*Weather.Tmax)-26, 2));
+		
+}
+public double getY1()
+{
+	double Y1;
+	Y1 = 1.5 - 0.768 * (Math.pow((Math.pow((ROWSPC * 0.01), 2) * PD), 0.1));
+	return Y1;
+}
+public double get_a()
+{
+	double a;
+	a = Math.exp(EMP2 * (n - nb));
+	return a;
+}
+public void PGS()
+{
+	PG = 2.1 * (Weather.SRAD / PD) * (1.0 - Math.exp(-getY1() * LAI));
+	
+}
+public void LAIS()
+{
+	double SWFAC = 0; 
+	SWFAC = SWFAC1 + SWFAC2;
+	if (n < Lfmax)
+		dLAI = SWFAC * PT * PD * EMP1 * dN * (get_a() / (1 + get_a()));
+	else
+		dLAI = -PD * di * p1 * sla;
+}
+public void RateCalculations()
+{
+	PTS();
+	dN = Lfmax / PT;
+	LAIS();
+	LAI = Math.pow(dLAI,0.01)*(0.15*PG);
+	System.out.println("LAI  :"+LAI);
+	PGS();
+	dw = (p1 * n * Math.exp(3)) * (0.05* PG);
+	dwc = dLAI / (Math.pow(sla, 2.7)) * (0.4*PG);
+	dwr = dw - dwc;
+	dwf = PG * PD;
+}
+public void integration()
+{
+//	LAI = Math.pow(dLAI,0.01)*(0.15*PG);
+	w = Math.abs(Math.exp(4.069) * dw);
+	wc = Math.exp(1) * dwc;
+	wr = Math.pow(dwc, 0) + w - wc - 1;
+	wf = dwf;
+	n = dN / 1000;
+}
+public void output() throws IOException
+{
+	File p2=new File("PlantOut.txt");
+	FileOutputStream pout=new FileOutputStream(p2);
+	PrintWriter pwout=new PrintWriter(pout);
+	pwout.println("Potential daily total dry matter increase: "+PG);
+	pwout.println("Daily growth rate reduction factor: "+PT);
+	pwout.println("Total plant dry matter weight: "+w);
+	pwout.println("Canopy dry matter weight: "+wc);
+	pwout.println("Root dry matter weight: "+wr);
+	pwout.println("Leaf area index: "+LAI+"\n\n");
+	pwout.close();
+
+}
+}

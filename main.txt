@@ -1,0 +1,17 @@
+package projectpack;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+public class Main {
+public static void main (String[]args) throws IOException, FileNotFoundException {
+Simulation sim1 =new Simulation();
+
+sim1.initialization();
+sim1.RateCalculations();
+sim1.integration();
+sim1.output();
+
+}
+}
+
